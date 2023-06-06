@@ -2,3 +2,4 @@ STLink/
 build/servo.bin
 build/servo.elf
 build/servo.o
+build/startup.o

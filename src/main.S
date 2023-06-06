@@ -7,10 +7,14 @@
 
 .include "src/utils.S"
 .include "src/servo_timer.S"
-.include "src/systick.S"
+// .include "src/systick.S"
+
+.globl delay_counter
 
 .section .data
 .align 4
+
+    delay_counter: .word 0
 
 .section .bss
 .align 4
@@ -54,21 +58,27 @@ loop:
     mov r2, #500
     str r2, [r1]
     
-    mov r0, #1000
+    ldr r0, =delay_counter
+    mov r1, #1000
+    str r1, [r0]
     bl  delay_ms
 
     ldr r1, =TIM2_CCR1
     mov r2, #1500
     str r2, [r1]
 
-    mov r0, #1000
+    ldr r0, =delay_counter
+    mov r1, #1000
+    str r1, [r0]
     bl  delay_ms
 
     ldr r1, =TIM2_CCR1
     mov r2, #2500
     str r2, [r1]
 
-    mov r0, #1000
+    ldr r0, =delay_counter
+    mov r1, #1000
+    str r1, [r0]
     bl  delay_ms
 
     b   loop
