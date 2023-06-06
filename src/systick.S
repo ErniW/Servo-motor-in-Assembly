@@ -40,7 +40,7 @@ SysTick_Handler:
 
     stop:
         pop {r0-r1, lr}
-        bx lr
+        bx  lr
 
 
 delay_ms:
@@ -55,33 +55,4 @@ delay_ms:
         bne wait
 
     pop {lr}
-    bx lr
-
-/*
-
-#  systick delay with polling and checking for systick countflag
-
-# Register used: r1 = time counter
-delay_ms:
-    push {lr}
-    ldr  r1, =SYSTICK_CTRL
-    mov  r4, #SYSTICK_COUNTFLAG
-
-    wait:   # Wait until all ms passes
-    
-        wait_ms:    # Wait until next ms tick occured in Systick
-
-            ldr r3, =SYSTICK_VAL
-            ldr r9, [r3]
-
-            ldr r2, [r1]
-            tst r2, r4
-            beq wait_ms
-
-        subs r0, r0, #1     // Substract 1 ms from counter
-        bne  wait
-
-    pop {lr}
     bx  lr
-
-*/

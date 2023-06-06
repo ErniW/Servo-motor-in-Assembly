@@ -10,11 +10,13 @@
 // .include "src/systick.S"
 
 .globl delay_counter
+.globl adc_value
 
 .section .data
 .align 4
 
     delay_counter: .word 0
+    adc_value: .word 0
 
 .section .bss
 .align 4
@@ -23,7 +25,6 @@
 
 .globl  main
 .word   main
-
 .thumb_func
 main:
 
@@ -40,8 +41,12 @@ main:
     mov BIT, TIM2_EN
     bl  bit_set
 
+    ldr REG, =RCC_APB2ENR
+    mov BIT, ADC1_EN
+    bl  bit_set
+
     ldr REG, =GPIOA_MODER
-    mov BIT, PA5_AF_MODE
+    mov BIT, PA5_AF_MODE | PA0_ADC_MODE
     bl  bit_set
 
     ldr REG, =GPIOA_AFRL
@@ -49,35 +54,26 @@ main:
     bl  bit_set
 
     bl  tim2_ch1_servo_init
-    bl  systick_init
     
+    bl  adc_init
+    bl  adc_start_conversion
+    bl  systick_init
 
 loop:
+    bl read_adc
 
-    ldr r1, =TIM2_CCR1
-    mov r2, #500
-    str r2, [r1]
-    
-    ldr r0, =delay_counter
-    mov r1, #1000
-    str r1, [r0]
-    bl  delay_ms
+    ldr r0, =adc_value
+    ldr r1, [r0]
+    mov r2, #2
+    udiv r1, r1, r2
+    add r1, r1, #500
 
-    ldr r1, =TIM2_CCR1
-    mov r2, #1500
-    str r2, [r1]
+    ldr r2, =TIM2_CCR1
+    mov r3, r1
+    str r3, [r2]
 
     ldr r0, =delay_counter
-    mov r1, #1000
-    str r1, [r0]
-    bl  delay_ms
-
-    ldr r1, =TIM2_CCR1
-    mov r2, #2500
-    str r2, [r1]
-
-    ldr r0, =delay_counter
-    mov r1, #1000
+    mov r1, #20
     str r1, [r0]
     bl  delay_ms
 
