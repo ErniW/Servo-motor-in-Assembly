@@ -1,0 +1,22 @@
+.equ TIM2_BASE,     0x40000000 
+
+.equ CR1_OFFSET,    0x00
+.equ CCMR1_OFFSET,  0x18
+.equ CCER_OFFSET,   0x20
+.equ PSC_OFFSET,    0x28
+.equ ARR_OFFSET,    0x2C
+.equ CCR1_OFFSET,   0x34
+
+.equ TIM2_CR1,      (TIM2_BASE + CR1_OFFSET)
+.equ TIM2_CCMR1,    (TIM2_BASE + CCMR1_OFFSET)
+.equ TIM2_CCER,     (TIM2_BASE + CCER_OFFSET)
+.equ TIM2_PSC,      (TIM2_BASE + PSC_OFFSET)
+.equ TIM2_ARR,      (TIM2_BASE + ARR_OFFSET)
+.equ TIM2_CCR1,     (TIM2_BASE + CCR1_OFFSET)
+
+.equ PRESCALER_VALUE,   16-1
+.equ ARR_VALUE,         20000
+
+.equ TIM_CCMR1_OC1M,     (3 << 5)
+.equ TIM_CCER_CC1E,      (1 << 0)
+.equ TIM_CR1_CEN,        (1 << 0)
